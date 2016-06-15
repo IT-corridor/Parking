@@ -44,7 +44,7 @@ a:hover { color:#101010; }
   left:28%;
   width:72%;
   height:100%; /* 91% for(1080p) */
-  top:85px;
+  top:0px;
   bottom:0px;
 }
 #mapbar {
@@ -109,6 +109,10 @@ a:hover { color:#101010; }
 
 .leaflet-container .leaflet-marker-icon { 
   cursor:pointer; 
+}
+
+.leaflet-top {
+    top: 85px;
 }
 
 #map_body{
@@ -209,7 +213,7 @@ a:hover { color:#101010; }
   left: 28.6%;
   top: 250px;
   width: 500px;
-  height: 1050px;
+  height: 725px;
   background-color: #ffffff;
   border: solid 1px #c3c3c3;  
   z-index: 100000;
@@ -225,6 +229,7 @@ a:hover { color:#101010; }
   width: 250px;
   margin-bottom: 20px;
 }
+
 .star-rating {
   line-height:32px;
   font-size:1.25em;

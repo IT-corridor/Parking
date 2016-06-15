@@ -436,7 +436,6 @@
                 $('.more_spots').hide();
             }
         });
-
         $('.close').click(function(){
             $('#detail_panel').hide();
         });
@@ -453,7 +452,6 @@
         window.spin_target = document.getElementById('mapbar')
         window.spinner = new Spinner(window.spin_opts);        
     });
-
         var bar = new Nanobar({
         bg: "rgb(105, 141, 123)",
         target: $("div.bar-container")[0]
