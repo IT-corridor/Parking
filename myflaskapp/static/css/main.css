@@ -44,7 +44,7 @@ a:hover { color:#101010; }
   left:28%;
   width:72%;
   height:100%; /* 91% for(1080p) */
-  top:35px;
+  top:85px;
   bottom:0px;
 }
 #mapbar {
@@ -207,10 +207,10 @@ a:hover { color:#101010; }
   padding: 10px;
   display: none;  
   left: 28.6%;
-  top: 100px;
-  width: 400px;
-  height: 500px;
-  background-color: #e5eeec;
+  top: 250px;
+  width: 500px;
+  height: 1050px;
+  background-color: #ffffff;
   border: solid 1px #c3c3c3;  
   z-index: 100000;
 }
@@ -222,6 +222,11 @@ a:hover { color:#101010; }
 }
 
 .parking_img {
-  width: 180px;
+  width: 250px;
   margin-bottom: 20px;
+}
+.star-rating {
+  line-height:32px;
+  font-size:1.25em;
+  cursor: pointer;
 }
