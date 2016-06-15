@@ -33,7 +33,7 @@ def before_request():
 def members():
     """List members."""
     g.user = User.query.get(session['user_id'])
-    active_spots = AddressEntry.query.filter(AddressEntry.user_id==current_user.id, AddressEntry.is_avail==True).count()
+    active_spots = AddressEntry.query.filter(AddressEntry.user_id==current_user.id, AddressEntry.is_avail==True, AddressEntry.is_dest==False).count()
     return render_template('users/members/members3.html', user=g.user.username, active_spots=active_spots)
 
 
