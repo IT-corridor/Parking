@@ -1,0 +1,96 @@
+/* =============================================================================
+   App specific CSS file.
+   ========================================================================== */
+
+/* universal */
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  padding-top: 0px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.container-narrow {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+/* Forms */
+
+.navbar-form input[type="text"],
+.navbar-form input[type="password"] {
+  width: 120px;
+}
+
+.form-register {
+  width: 50%;
+}
+
+.form-register .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.btn-info.active, .btn-info.focus, .btn-info:active, .btn-info:focus, .btn-info:hover, .open > .dropdown-toggle.btn-info {
+  color: #fff;
+  background-color: rgb(105, 141, 123);
+  border-color: rgb(105, 141, 123);
+}
+.btn-info, .btn-info.active {
+    color: #fff;
+    background-color: rgb(98, 99, 98);
+    border-color: rgba(176, 185, 180, 0.4);
+}
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 0px;
+  border-top: 1px solid #eaeaea;
+  color: #333;
+}
+
+footer a {
+  color: #333;
+}
+
+footer p {
+  float: right;
+  margin-right: 25px;
+}
+
+footer ul {
+  list-style: none;
+}
+
+footer ul li {
+  float: left;
+  margin-left: 10px;
+}
+
+footer .company {
+  float: left;
+  margin-left: 25px;
+}
+
+footer .footer-nav {
+  float: right;
+  background: transparent;
+  margin-right: 0px;
+  list-style: none;
+}

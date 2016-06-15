@@ -1,0 +1,8 @@
+{
+  "test_functional.py::TestLoggingIn::()::test_can_log_in_returns_200": true, 
+  "test_functional.py::TestLoggingIn::()::test_sees_alert_on_log_out": true, 
+  "test_functional.py::TestLoggingIn::()::test_sees_error_message_if_password_is_incorrect": true, 
+  "test_functional.py::TestLoggingIn::()::test_sees_error_message_if_username_doesnt_exist": true, 
+  "test_functional.py::TestParking::()::test_can_load_parking_section_returns_200": true, 
+  "test_functional.py::TestRegistering::()::test_can_register": true
+}

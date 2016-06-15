@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Register</h2>
+<div class="container-narrow">
+    <br/>
+    <br/>
+    <form id="registerForm" class="form registration-form form-horizontal sp-form" method="POST" action="" role="form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.username.label}}
+                {{form.username(placeholder="Username", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.email.label}}
+                {{form.email(placeholder="Email", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.firstname.label}}
+                {{form.firstname(placeholder="First Name", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.lastname.label}}
+                {{form.lastname(placeholder="First Name", class_="form-control")}}
+            </div>
+
+            <div class="form-group">
+                {{form.password.label}}
+                {{form.password(placeholder="Password", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.confirm.label}}
+                {{form.confirm(placeholder="Confirm Password", class_="form-control")}}
+            </div>
+            <center>
+            <p><input class="btn btn-default btn-submit" type="submit" value="Register"></p>
+            </center>
+    </form>
+<center>
+    <p><em>Already registered?</em> Click <a href="/">here</a> to login.</p>
+</center>
+</div>
+
+{% endblock %}

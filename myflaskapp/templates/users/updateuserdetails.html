@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+  <link rel='stylesheet' href="/static/css/main.css" />
+
+{% block content %}
+
+  <style>
+#username {
+    background-color:rgba(0, 0, 0, 0);
+    color:gray;
+    border: none;
+    outline:none;
+    height:30px;
+    transition:height 1s;
+    -webkit-transition:height 1s;
+}
+#username:focus {
+    height:50px;
+    font-size:16px;
+}
+
+#email {
+    background-color:rgba(0, 0, 0, 0);
+    color:gray;
+    border: none;
+    outline:none;
+    height:30px;
+    transition:height 1s;
+    -webkit-transition:height 1s;
+}
+#email:focus {
+    height:50px;
+    font-size:16px;
+}
+.alert-message {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+  </style>
+<div class="heading" style="margin-top: 80px">
+<h4>Update User Details</h4>
+</div>
+<br>
+<br>
+<h5>User Name</h5>
+
+<form action="" method="POST" >
+{{ form.hidden_tag() }}
+  <div class="control-group">
+      <div class="controls">
+        <input type="string" id="username" name="username" class="input-xlarge"
+          placeholder="New User Name">
+      </div>
+  </div>
+
+<h5>Email</h5>
+
+  <div class="control-group">
+      <div class="controls">
+        <input type="email" id="email" name="email" class="input-xlarge"
+          placeholder=" New Email">
+      </div>
+  </div>
+<br>
+  <div class="control-group">
+      <div class="controls">
+        <button type="update" class="btn btn-success">Change</button>
+      </div>
+  </div>
+<br>
+  <INPUT TYPE="button" VALUE="Back" class="btn btn-success" onClick="history.go(-1);">
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block csrfblock %}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+{% endblock %}
+{% block content %}
+<div style="margin-top:100%" id="map_body">
+  <link rel='stylesheet' href='/static/css/L.Control.Locate.mapbox.css' />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' />
+  <link rel='stylesheet' href='/static/css/mapbox.css' />
+  <link rel='stylesheet' href="/static/libs/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel='stylesheet' href="/static/css/main.css" />
+  
+  <script src="/static/js/jquery-2.2.2.min.js"></script>
+  <script src='/static/js/mapbox.js'></script>
+  <script src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/js/spin.min.js"></script>
+  <script src='/static/js/L.Control.Locate.min.js'></script>
+  <script type="text/javascript" src="/static/js/nanobar.min.js"></script>
+  
+  <div class='sidebar'>
+    <div class='heading' style="margin-top: 60px">
+      <h4>Where to?</h4>
+    </div>
+
+    <div id="address_submit">
+      <!-- Frame One -->
+      <div id="user_controls">
+        <button type="btn" class="btn btn-default" onclick="window.address_submit.update_state('input');" style="margin:20px;">Set or Renew Destination</button>
+      </div>
+
+      <!-- Frame Two -->
+      <div id="user_input" class="text-muted">
+      <br>
+        <form onsubmit="window.address_submit.commit(event);" name="user_input_form" action="." method="POST" enctype="multipart/form-data">
+          
+          <div class="form-group">
+            <label for="building_name"> Spot name </label>
+            <input type="text" class="form-control" id="building_name" name="building_name" placeholder="Empress"/>
+          </div>
+          <!--
+          <div class="form-group">
+            <label for="phone"> Phone </label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="(250) 216-6841"/>
+          </div>
+          -->
+          <br>
+          <div class="form-group">
+            <label for="address"> Address # and Street </label>
+            <input type="text" class="form-control" id="address" name="address" placeholder="3119 Shelbourne St" required="true"/>
+          </div>
+          <br>
+          <!--
+          <div class="form-group">
+            <label for="cross_street"> Cross Street </label>
+            <input type="text" class="form-control" id="cross_stree" name="cross_street" placeholder="Fort and Foulbay"/>
+          </div>
+          -->
+          <div class="form-group">
+            <label for="city"> City </label>
+            <input type="text" class="form-control" id="city" name="city" placeholder="Victoria" required="required"/>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="state"> State/Province </label>
+            <input type="text" class="form-control" id="state" name="state" placeholder="BC" required="required"/>
+          </div>
+          <!--
+          <div class="form-group">
+            <label for="postal_code"> Postal Code</label>
+            <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="V8Z1A8"/>
+          </div>
+          -->
+          <div style="padding: 25px;">
+            <button type="submit" class="btn btn-primary" style="margin-left:0px;"> Submit </button>
+            <button type="button" class="btn btn-default" onclick="window.address_submit.update_state('initial');" style="margin-left:30px;"> Cancel Update </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Frame Three -->
+      <div id="user_validation"></div>
+
+      <!-- Frame Four -->
+      <div id="done">
+        <h4 style="margin:10px 20px"> Address Saved </h4>
+      </div>
+
+      <!-- Listings -->
+      <div class="closest_coordinates"></div>
+      
+    </div>
+  </div>
+  <div id="mapbar">
+    <div id="map" class="map"> </div>
+  </div>
+  <div id="detail_panel">
+    <img class="close" src="/static/img/close.png"></img>
+    <h3 class="address">3095 Shelbourne St, British Columbia </h3>
+    <h4>Price: <b class="price">$3</b></h4>
+    <img class="parking_img" src="/static/img/parking.jpeg"></img>
+    <div>You can book this spot by calling 242-423-4234.</div>
+  </div>
+  <script type="text/javascript" src="/static/js/main.js"></script>
+</div>
+{% endblock %}

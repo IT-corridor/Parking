@@ -1,0 +1,28 @@
+  <link rel="stylesheet" href="/static/libs/bootstrap/dist/css/bootstrap.min.css">
+
+  <script type="text/javascript" src="/static/js/jquery-2.2.2.min.js"></script>  
+  <script type="text/javascript" src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+{% extends "layout.html" %}
+{% block content %}
+<head>
+	<style type="text/css">
+.alert-info, .alert-warning, .alert-success {
+  position: relative;
+  top: 20px;
+  height: 45px; 
+  left: 0;
+  right: 0;
+  z-index: 7000;
+
+	</style>
+</head>
+
+<h1>Welcome!</h1>
+<br>
+<p>You have not confirmed your account. Please check your inbox (and your spam folder) - you should have received an email with a confirmation link.</p>
+<p>Didn't get the email? <a href="{{ url_for('public.resend_confirmation') }}">Resend</a>.</p>
+<center>
+<blockquote class="imgur-embed-pub" lang="en" data-id="VvEVrph" data-context="false"></blockquote>
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+<center>
+{% endblock %}

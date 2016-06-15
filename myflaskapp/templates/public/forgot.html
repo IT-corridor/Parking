@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+<style>
+#email {
+    background-color:rgba(0, 0, 0, 0);
+    color:gray;
+    border: none;
+    outline:none;
+    height:30px;
+    transition:height 1s;
+    -webkit-transition:height 1s;
+}
+#email:focus {
+    height:50px;
+    font-size:16px;
+}
+.alert-message {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+</style>
+  <div class="control-group">
+      <div class="controls">
+		<form class="ui form" action="/forgot" method="POST">
+			<h4 class="ui dividing header" style="margin-top: 50px;">Enter your email to receive a Password reset link</h4>
+			<br>
+			<br>
+			 <input type="email" id="email" name="email" class="input-xlarge"
+          	placeholder="Email" >
+		  	 {{ form.csrf_token }}
+		  	<button class="btn btn-success" type="submit">Confirm</button>
+		</form>
+	</div>
+
+{% endblock %}
+
+placeholder="Repeat New Password">

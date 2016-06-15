@@ -1,0 +1,113 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<head>
+<style type="text/css">
+.navbar-inverse, .navbar-fixed-top {
+    position: relative;
+    z-index: 3;
+    background: #262C35;
+    border-color: #262C35;
+    background-color: #262C35;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: -1px;
+    border-bottom: 1px solid #262C35;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+#background {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+}
+.container h3 {
+    color: white;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif;
+    font-size: 20px;
+    line-height: 1.4;
+}
+.container p {
+  color: white;
+}
+.alert-warning, .alert-info, .alert-success {
+  position: relative;
+  top: 80px;
+  height: 55px; 
+  left: 0;
+  right: 0;
+  z-index: 7000;
+}
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px; /* bottom = footer height */
+    padding: 25px;
+}
+
+footer {
+    background-color: #666;
+    border-color: #666;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    overflow:hidden;
+}
+</style>
+  <meta charset="utf-8">
+  <title>title</title>
+  <link rel="stylesheet" href="/static/libs/bootstrap/dist/css/bootstrap.min.css">
+  <script type="text/javascript" src="/static/js/jquery-2.2.2.min.js"></script>
+  <script src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+    <body>
+      <video autoplay loop muted id="background">
+        <source src="{{ url_for('static', filename='img/Going-Places.mp4') }}" type="video/mp4">
+      </video>
+    </body>
+<br>
+<br>
+<div style="background:transparent !important" class="jumbotron">
+  <a href="{{ url_for('public.home') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" width="80px"/></a>
+<center>
+  <p>Parking for everyone</p>
+  <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+
+</div><!-- /.jumbotron -->
+<br>
+<br>
+<div class="body-content">
+  <div class="row">
+    <div class="col-lg-4">
+      <h3><i class="fa fa-map-marker"></i> Buy Parking</h3>
+      <p>Can't find parking? Rent a spot here!</p>
+      <p><a class="btn btn-default" href="#">Buy now! &raquo;</a></p>
+    </div>
+    <div class="col-lg-4">
+      <h3><i class="fa fa-money"></i> Sell Parking</h3>
+      <p>Have access to convenient parking? Sell it!</p>
+      <p><a href="#" class="btn btn-default" href="#">Sell now! &raquo;</a></p>
+   </div>
+    <div class="col-lg-4">
+      <h3><i class="fa fa-users"></i> Beat the lines!</h3>
+      <p>Find the best parking closest to you! </p>
+      <p><a href="#" class="btn btn-default" href="#">Save some time! &raquo;</a></p>
+    </div>
+  </div><!-- /.row -->
+</div>
+</center>
+{% endblock %}
+

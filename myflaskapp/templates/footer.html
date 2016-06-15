@@ -1,0 +1,40 @@
+<head>
+<style>
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+}
+
+#main {
+  overflow:auto;
+  padding-bottom:150px; /* this needs to be bigger than footer height*/
+}
+.footer-nav {
+  position: relative;
+  background: #666;
+  margin-top: -150px; /* negative value of footer height */
+  height: 150px;
+  clear:both;
+  padding-top:20px;
+}  
+</style>
+</head>
+<footer>
+  <small>
+<!--   <ul class="company">
+    <li>© Rob Andrewz</li>
+  </ul> -->
+
+    <ul class="footer-nav">
+<!-- 
+      <li><a href="{{ url_for('public.about') }}">About</a></li>
+
+      <li><a href="mailto:digitalwave@tuta.io">Contact</a></li>
+-->
+    </ul>
+
+  </small>
+</footer>

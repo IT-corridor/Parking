@@ -1,0 +1,46 @@
+
+{% extends "layout.html" %}
+
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' />
+  <link rel='stylesheet' href="/static/libs/bootstrap/dist/css/bootstrap.min.css" />
+
+  <script type="text/javascript" src="/static/js/jquery-2.2.2.min.js"></script>
+  <script type="text/javascript" src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/js/nanobar.min.js"></script>
+  <script type="text/javascript" src="/static/js/script.js"></script>
+
+<head>
+  <title>Stripe</title>
+  <style type="text/css" media="screen">
+    form article label {
+      display: block;
+      margin: 5px;
+    }
+
+    form .submit {
+      margin: 15px 0;
+    }
+  </style>
+</head>
+{% block content %}
+<br>
+<center>
+  <form action="/users/charge" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="hidden" name="amount" value="{{ price*100 }}">
+    <article>
+      <label>
+        <span>Amount is ${{price}}</span>
+      </label>
+    </article>
+
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ key }}"
+            data-description="A Parkable Charge"
+            data-amount="{{price * 100}}"
+            data-locale="auto"
+            data-image="/static/img/logo2.png"
+            data-zip-code="true"></script>
+  </form>
+</center>
+{% endblock %}

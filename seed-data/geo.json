@@ -1,0 +1,234 @@
+[
+  {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.320481,
+            48.452638
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(250) 598-3792",
+          "phone": "2505983792",
+          "address": "3329 University Woods",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8P5P9",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.309846,
+            48.465384
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(202) 507-8357",
+          "phone": "2025078357",
+          "address": "3800 Finnerty Rd",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8P5C2",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.384138,
+            48.459933
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(250) 588-9595",
+          "phone": "2505889595",
+          "address": "171 Kamloops Ave",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8Z1W4",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.358755,
+            48.426688
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(250) 483-4866",
+          "phone": "2503834866",
+          "address": "3440 Saanich Rd",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8Z0B9",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.365661,
+            48.425022
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(250) 952-5690",
+          "phone": "2509525690",
+          "address": "1150 Douglas St",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8W3M9",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.334267,
+            48.447625
+          ]
+        },
+        "properties": {
+          "address": "3190 Shelbourne St",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8T3A8",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.394240,
+            48.453377
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(250) 381-7123",
+          "phone": "2503817123",
+          "address": "3170 Tillicum Rd",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V9A7C5",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.329885,
+            48.478009
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(571) 203-0082",
+          "phone": "5712030082",
+          "address": "4100 Lambrick Way",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8N5R3",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.318863,
+            48.468942
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(703) 522-2016",
+          "phone": "7035222016",
+          "address": "3939 Gordon Head Rd",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8N3X2",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.330676,
+            48.468815
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(610) 642-9400",
+          "phone": "6106429400",
+          "address": "1654 McKenzie Avenue",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8N0A3",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.368519,
+            48.424771
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(215) 386-1365",
+          "phone": "2153861365",
+          "address": "525 Fort St",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8W1E9",
+          "state": "BC"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -123.368373,
+            48.421631
+          ]
+        },
+        "properties": {
+          "phoneFormatted": "(202) 331-3355",
+          "phone": "2023313355",
+          "address": "721 Government St",
+          "city": "Victoria",
+          "country": "Canada",
+          "postalCode": "V8W1W5",
+          "state": "BC"
+        }
+      }
+    ]
+  }
+]
+

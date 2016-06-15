@@ -1,0 +1,244 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <title>
+      
+        Overview &middot; 
+      
+    </title>
+
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+    
+      <link href="static/css/members/toolkit-light.css" rel="stylesheet">
+    
+    
+    <link href="static/css/members/application.css" rel="stylesheet">
+
+    <style>
+      /* note: this is a hack for ios iframe for bootstrap themes shopify page */
+      /* this chunk of css is not part of the toolkit :) */
+      body {
+        width: 1px;
+        min-width: 100%;
+        *width: 100%;
+      }
+      .navbar-inverse {
+        background-color: #252830;
+        border-color: #1a1c22;
+      }
+      .alert-warning, .alert-info, .alert-success {
+        position: relative;
+        top: 40px;
+        height: 55px; 
+        left: 0;
+        right: 0;
+        z-index: 7000;
+      }      
+    </style>
+  </head>
+
+
+<body>
+  <div class="container" style="margin-top: 56px">
+    <div class="row">
+      <div class="col-sm-3 sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-header">
+            <button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
+              <span class="sr-only">Toggle nav</span>
+            </button>
+            <a class="sidebar-brand img-responsive" href="#">
+              <span class="icon icon-leaf sidebar-brand-icon"></span>
+            </a>
+          </div>
+
+          <div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
+            <form class="sidebar-form">
+              <input class="form-control" type="text" placeholder="Search...">
+              <button type="submit" class="btn-link">
+                <span class="icon icon-magnifying-glass"></span>
+              </button>
+            </form>
+            <ul class="nav nav-pills nav-stacked">
+              <li class="nav-header">Dashboard</li>
+              <li class="active">
+                <a href="#">Overview</a>
+              </li>
+              <li >
+                <a href="/members/order-history/index.html">Order history</a>
+              </li>
+              <li >
+                <a href="{{ url_for('user.index') }}">Find Parking</a>
+              </li>
+              <li >
+                <a href="{{ url_for('user.sell_parking') }}">Sell Parking</a>
+              </li>
+              <li >
+                <a href="#">Withdraw Funds</a>
+              <li class="nav-header">More</li>
+              <li >
+                <a href="#">
+                  How it works
+                </a>
+              </li>
+              <li>
+                <a href="{{ url_for('user.resetpassword') }}">Change Password</a>
+              </li>
+              <li>
+                <a href="http://getbootstrap.com" target="blank">
+                  Privacy Policy
+                </a>
+              </li>
+              <li >
+                <a href="light/index.html">Technical Support</a>
+              </li>
+            </ul>
+            <hr class="visible-xs m-t">
+          </div>
+        </nav>
+      </div>
+      <div class="col-sm-9 content">
+        <div class="dashhead">
+  <div class="dashhead-titles">
+    <h6 class="dashhead-subtitle">Dashboard</h6>
+    <h2 class="dashhead-title">Welcome {{ user }}!</h2>
+  </div>
+
+  <div class="btn-toolbar dashhead-toolbar">
+    <div class="btn-toolbar-item input-with-icon">
+      <input type="text" value="01/01/15 - 01/08/15" class="form-control" data-provide="datepicker">
+      <span class="icon icon-calendar"></span>
+    </div>
+  </div>
+</div>
+
+<hr class="m-t">
+
+<div class="row text-center m-t-lg">
+  <div class="col-sm-4 m-b-md">
+    <div class="w-lg m-x-auto">
+      <canvas
+        class="ex-graph"
+        width="200" height="200"
+        data-chart="doughnut"
+        data-value="[{ value: 230, color: '#1ca8dd', label: 'Returning' }, { value: 130, color: '#1bc98e', label: 'New' }]"
+        data-segment-stroke-color="#252830">
+      </canvas>
+    </div>
+    <strong class="text-muted">Parking</strong>
+    <h3>Your Available Parking</h3>
+    <h4>Spots Currently Active: 14</h4>
+  </div>
+  <div class="col-sm-4 m-b-md">
+    <div class="w-lg m-x-auto">
+      <canvas
+        class="ex-graph"
+        width="200" height="200"
+        data-chart="doughnut"
+        data-value="[{ value: 330, color: '#1ca8dd', label: 'Recurring' }, { value: 30, color: '#1bc98e', label: 'New' }]"
+        data-segment-stroke-color="#252830">
+      </canvas>
+    </div>
+    <strong class="text-muted">Your Revenue</strong>
+    <h3>Revenue total</h3>
+    <h4>Wallet Balance: $141</h4>
+  </div>
+  <div class="col-sm-4 m-b-md">
+    <div class="w-lg m-x-auto">
+      <canvas
+        class="ex-graph"
+        width="200" height="200"
+        data-chart="doughnut"
+        data-value="[{ value: 100, color: '#1ca8dd', label: 'Referrals' }, { value: 260, color: '#1bc98e', label: 'Direct' }]"
+        data-segment-stroke-color="#252830">
+      </canvas>
+    </div>
+    <strong class="text-muted">Inquiries</strong>
+    <h3>Recent Inquiry Activity</h3>
+    <h4>3 Inquiries this month<h5>
+  </div>
+</div>
+
+<div class="hr-divider m-t-md m-b">
+  <h3 class="hr-divider-content hr-divider-heading">Quick stats</h3>
+</div>
+
+<div class="row statcards">
+  <div class="col-sm-6 col-lg-3 m-b">
+    <div class="statcard statcard-success">
+      <div class="p-a">
+        <span class="statcard-desc">Page views</span>
+        <h2 class="statcard-number">
+          12,938
+          <small class="delta-indicator delta-positive">5%</small>
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a','b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3 m-b">
+    <div class="statcard statcard-danger">
+      <div class="p-a">
+        <span class="statcard-desc">Downloads</span>
+        <h2 class="statcard-number">
+          758
+          <small class="delta-indicator delta-negative">1.3%</small>
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3 m-b">
+    <div class="statcard statcard-info">
+      <div class="p-a">
+        <span class="statcard-desc">Sign-ups</span>
+        <h2 class="statcard-number">
+          1,293
+          <small class="delta-indicator delta-positive">6.75%</small>
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[12,38,32,60,36,54,68]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+  <div class="col-sm-6 col-lg-3 m-b">
+    <div class="statcard statcard-warning">
+      <div class="p-a">
+        <span class="statcard-desc">Downloads</span>
+        <h2 class="statcard-number">
+          758
+          <small class="delta-indicator delta-negative">1.3%</small>
+        </h2>
+        <hr class="statcard-hr m-b-0">
+      </div>
+      <canvas id="sparkline1" width="378" height="94" class="sparkline" data-chart="spark-line" data-value="[{data:[43,48,52,58,50,95,100]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
+    </div>
+  </div>
+</div>
+
+    <script src="/static/js/jquery-2.2.2.min.js"></script>
+    <script src="/static/js/chart.js"></script>
+    <script src="/static/js/tablesorter.min.js"></script>
+    <script src="/static/js/toolkit.js"></script>
+    <script src="/static/js/application.js"></script>
+    <script type="text/javascript" src="/static/js/nanobar.min.js"></script>
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <script>
+      // execute/clear BS loaders for docs
+      $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+    </script>
+  </body>
+</html>
+
+{% endblock %}

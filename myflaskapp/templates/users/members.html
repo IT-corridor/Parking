@@ -1,0 +1,39 @@
+
+{% extends "layout.html" %}
+{% block content %}
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' />
+  <link rel='stylesheet' href="/static/libs/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel='stylesheet' href="/static/css/main.css" />
+  <link rel='stylesheet' href="/static/css/style.css" />
+  <script src="/static/js/jquery-2.2.2.min.js"></script>
+  <script src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/js/nanobar.min.js"></script>
+  <script type="text/javascript" src="/static/js/script.js"></script>
+<br>
+<br>
+<!-- Modal -->
+<div >
+  <div class="modal-dialog" style="margin-top: 80px">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Welcome {{ user }}!</h4>
+      </div>
+      <div class="modal-body">
+      <center> 
+        <a href="{{ url_for('user.index') }}" class="btn btn-info btn-md" >I need Parking</a>
+        <a href="{{ url_for('user.sell_parking') }}" class="btn btn-info btn-md" >I have Parking to offer</a>
+        <a href="{{ url_for('user.update') }}" class="btn btn-info btn-md" >Username</a>
+        <a href="{{ url_for('user.resetpassword') }}" class="btn btn-info btn-md" >Password</a>
+      </center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
