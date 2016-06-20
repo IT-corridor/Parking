@@ -84,6 +84,15 @@ def index():
     # get coordinates of address from database
     return render_template('users/index.html')
 
+@blueprint.route('/_review_score', methods=['POST'])
+@login_required
+@check_confirmed
+def review_stars():
+    if request.method == 'POST':
+        rating = request.form.get('rating', type=int)
+        #save to db and return user rating as well as average rating.
+        return jsonify({'rating': rating})
+
 # user rm single parking spot
 
 @blueprint.route('/delete_spot', methods=["POST"])

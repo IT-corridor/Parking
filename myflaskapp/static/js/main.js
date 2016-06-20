@@ -400,26 +400,35 @@
         }
         var $star_rating = $('.star-rating .fa');
         var SetRatingStar = function() {
-          return $star_rating.each(function() {
-            if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
-              return $(this).removeClass('fa-star-o').addClass('fa-star');
-            } else {
-              return $(this).removeClass('fa-star').addClass('fa-star-o');
-            }
-          });
+            return $star_rating.each(function() {
+                if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))){
+                    return $(this).removeClass('fa-star-o').addClass('fa-star');
+                }else{
+                    return $(this).removeClass('fa-star').addClass('fa-star-o');
+                }
+            });
         };
-        $star_rating.on('click', function() {
-          $star_rating.siblings('input.rating-value').val($(this).data('rating'));
-          return SetRatingStar();
+        $star_rating.on('click', function(){
+            $star_rating.siblings('input.rating-value').val($(this).data('rating'));            
+            var endpoint = '/users/_review_score';
+            $.ajax({
+                'url': endpoint,
+                'data': {'rating': $star_rating.siblings('input.rating-value').val()},
+                'type': 'POST',
+                'beforeSend': function(xhr){
+                    xhr.setRequestHeader('X-CSRFToken', $('meta[name="csrf-token"]').attr('content'))
+                }
+            })
+            return SetRatingStar(); 
         });
         SetRatingStar();                
         window.show_more = function(obj){
             var title = $(obj).html();
             // 'more spots' have a class 'more_spots'
-            if(title == 'Show more spots') {
+            if(title == 'Show more spots'){
                 $(obj).html('Show less spots');
                 $('.more_spots').show();
-            } else {
+            }else{
                 $(obj).html('Show more spots');
                 $('.more_spots').hide();
                 // remove the directions in case they are shown
