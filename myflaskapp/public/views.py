@@ -11,7 +11,7 @@ from myflaskapp.user.models import User
 from myflaskapp.utils import flash_errors
 from itsdangerous import URLSafeTimedSerializer
 from myflaskapp.user.token import generate_confirmation_token, confirm_token, \
-     send_email, create_token, parse_token
+     send_email, send_mailgun_email, create_token, parse_token
 import datetime
 
 
@@ -60,9 +60,9 @@ def unconfirmed():
 def resend_confirmation():
     token = generate_confirmation_token(current_user.email)
     confirm_url = url_for('public.confirm_email', token=token, _external=True)
-    html = render_template('public/activate.html', confirm_url=confirm_url)
+    html = render_template('public/transactional-email-templates/templates/inlined/confirm.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
-    send_email(current_user.email, subject, html)
+    send_mailgun_email(current_user.email, subject, html)
     flash('A new confirmation email has been sent.', 'success')
     return redirect(url_for('public.unconfirmed'))
 
@@ -98,8 +98,8 @@ def forgot():
             subject = 'Reset your password.'
             token = ts.dumps(user.email, salt='password-reset-key')
             resetUrl = url_for('public.reset', token=token, _external=True)
-            html = render_template('public/reset.html', reset_url=resetUrl)
-            send_email(user.email, subject, html)
+            html = render_template('public/transactional-email-templates/templates/inlined/reset_password.html', reset_url=resetUrl)
+            send_mailgun_email(user.email, subject, html)
             # Send back to the home page
             flash('Check your email to reset your password.', 'positive')
             return redirect(url_for('public.home'))
@@ -145,9 +145,9 @@ def register():
         email = form.email.data
         token = generate_confirmation_token(email)
         confirm_url = url_for('public.confirm_email', token=token, _external=True)
-        html = render_template('public/activate.html', confirm_url=confirm_url)
+        html = render_template('public/transactional-email-templates/templates/inlined/confirm.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
-        send_email(email, subject, html)
+        send_mailgun_email(email, subject, html)
 
         login_user(user)
 

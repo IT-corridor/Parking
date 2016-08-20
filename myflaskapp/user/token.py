@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, url_for, g, jsonify, request, make
 from flask_login import current_user
 from flask_restful import Resource, Api
 from flask_mail import Message
-import flask_restful
+import flask_restful, requests
 import jwt
 from jwt import DecodeError, ExpiredSignature
 from itsdangerous import URLSafeTimedSerializer
@@ -37,7 +37,7 @@ def confirm_token(token, expiration=3600):
         return False
     return email
 
-
+#Send email using flask-mail
 def send_email(to, subject, template):
     msg = Message(
         subject,
@@ -46,6 +46,17 @@ def send_email(to, subject, template):
         sender='rob@adfreetime.com'
     )
     mail.send(msg)
+
+#Send email using Mailgun Api
+
+def send_mailgun_email(to, subject, template):
+    return requests.post(
+        "https://api.mailgun.net/v3/app.parkable.ch/messages",
+        auth=("api", "key-773add185ebcc24810d9b6bb3c2589bb"),
+        data={"from": "Parkable <mailgun@app.parkable.ch>",
+              "to": [to],
+              "subject": subject,
+              "html": template})
 
 # email confirmation decorator for user views.
 
