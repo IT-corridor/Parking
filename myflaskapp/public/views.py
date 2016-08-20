@@ -101,8 +101,8 @@ def forgot():
             html = render_template('public/email_templates/reset_password.html', reset_url=resetUrl)
             send_mailgun_email(user.email, subject, html)
             # Send back to the home page
-            flash('Check your email to reset your password.', 'positive')
             return redirect(url_for('public.home'))
+            flash('Check your email to reset your password.', 'positive')
         else:
             flash('Unknown email address.', 'danger')
             return redirect(url_for('public.forgot'))
