@@ -60,7 +60,7 @@ def unconfirmed():
 def resend_confirmation():
     token = generate_confirmation_token(current_user.email)
     confirm_url = url_for('public.confirm_email', token=token, _external=True)
-    html = render_template('public/transactional-email-templates/templates/inlined/confirm.html', confirm_url=confirm_url)
+    html = render_template('public/email_templates/confirm.html', confirm_url=confirm_url)
     subject = "Please confirm your email"
     send_mailgun_email(current_user.email, subject, html)
     flash('A new confirmation email has been sent.', 'success')
@@ -98,7 +98,7 @@ def forgot():
             subject = 'Reset your password.'
             token = ts.dumps(user.email, salt='password-reset-key')
             resetUrl = url_for('public.reset', token=token, _external=True)
-            html = render_template('public/transactional-email-templates/templates/inlined/reset_password.html', reset_url=resetUrl)
+            html = render_template('public/email_templates/reset_password.html', reset_url=resetUrl)
             send_mailgun_email(user.email, subject, html)
             # Send back to the home page
             flash('Check your email to reset your password.', 'positive')
@@ -145,7 +145,7 @@ def register():
         email = form.email.data
         token = generate_confirmation_token(email)
         confirm_url = url_for('public.confirm_email', token=token, _external=True)
-        html = render_template('public/transactional-email-templates/templates/inlined/confirm.html', confirm_url=confirm_url)
+        html = render_template('public/email_templates/confirm.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
         send_mailgun_email(email, subject, html)
 
