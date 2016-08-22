@@ -6,7 +6,7 @@ import stripe
 from flask import Blueprint, Flask, render_template, \
     request, url_for, send_from_directory, redirect, session, g, flash, jsonify,\
     abort
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, fresh_login_required
 from myflaskapp.user.models import User, AddressEntry, AddressDistance
 from myflaskapp.extensions import celery
 from myflaskapp.user.forms import EditForm, Update, AddressEntryForm, AddressEntryCommitForm
@@ -40,7 +40,7 @@ def members():
 #update user details
 
 @blueprint.route('/update', methods=['GET','POST'])
-@login_required
+@fresh_login_required
 @check_confirmed
 def update():
     form = Update()
@@ -56,7 +56,7 @@ def update():
 # reset password
 
 @blueprint.route('/resetpassword', methods=['GET','POST'] )
-@login_required
+@fresh_login_required
 @check_confirmed
 def resetpassword():
     #if 'user_id' in session:
