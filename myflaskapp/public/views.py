@@ -2,6 +2,7 @@
 """Public section, including homepage and signup."""
 from flask import Blueprint, flash, redirect, render_template, request, url_for, jsonify, session, g, abort
 from flask_login import login_required, login_user, logout_user, current_user
+from flask_cors import CORS, cross_origin
 from myflaskapp.database import db
 from myflaskapp.extensions import login_manager, bcrypt, celery
 from myflaskapp.public.forms import LoginForm
@@ -17,6 +18,9 @@ import datetime
 
 blueprint = Blueprint('public', __name__, static_folder='../static')
 ts = URLSafeTimedSerializer('Secretfuckingkeyseverywhere')
+
+#for eventual use when seperating Backend api on different portfrom Frontend
+cors = CORS(blueprint, resources={r"/api/*": {"origins": "127.0.0.1:5000/"}}, supports_credentials=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -140,7 +144,7 @@ def register():
     """Register new user."""
     form = RegisterForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
-        user = User.create(username=form.username.data, email=form.email.data, password=form.password.data, 
+        user = User.create(username=form.username.data, email=form.email.data, password=form.password.data,
                     first_name=form.firstname.data, last_name=form.lastname.data, active=True, confirmed=False)
         email = form.email.data
         token = generate_confirmation_token(email)
@@ -198,6 +202,7 @@ def registerapi():
 #API Login
 
 #@CsrfProtect.exempt('viewname')
+#this login returns a "set session cookie" header and token+logged_in status
 @blueprint.route('/api/login', methods=['POST'])
 def loginapi():
     json_data = request.json
@@ -210,17 +215,16 @@ def loginapi():
         status = False
     g.user = user
     if status == True:
-        return jsonify(dict({'result': status, 
+        return jsonify(dict({'result': status,
                              'token': create_token(user)
                             }))
     else:
         return jsonify({'result': status})
 
-    
+
 #API Logout
 
 @blueprint.route('/api/logout')
 def logoutapi():
     session.pop('logged_in', None)
     return jsonify({'result': 'success'})
-

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 from flask import Flask, render_template
-
 from myflaskapp import public, user
 from myflaskapp.public import api
 from myflaskapp.assets import assets

@@ -65,6 +65,8 @@ marshmallow==2.7.3
 #Celery
 celery==3.1.23
 
+#Flask-cors
+flask-cors==3.0.0
 
 
 
@@ -96,3 +98,4 @@ celery==3.1.23
 #pygeoip
 #marshmallow
 #celery
+#flask-cors
