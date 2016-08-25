@@ -9,14 +9,15 @@
   <link rel='stylesheet' href='/static/css/mapbox.css' />
   <link rel='stylesheet' href="/static/libs/bootstrap/dist/css/bootstrap.min.css" />
   <link rel='stylesheet' href="/static/css/main.css" />
-  
+
   <script src="/static/js/jquery-2.2.2.min.js"></script>
   <script src='/static/js/mapbox.js'></script>
   <script src="/static/libs/bootstrap/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/static/js/spin.min.js"></script>
   <script src='/static/js/L.Control.Locate.min.js'></script>
   <script type="text/javascript" src="/static/js/nanobar.min.js"></script>
-  
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>"></script>
+
   <div class='sidebar'>
     <div class='heading' style="margin-top: 60px">
       <h4>Where to?</h4>
@@ -32,7 +33,7 @@
       <div id="user_input" class="text-muted">
       <br>
         <form onsubmit="window.address_submit.commit(event);" name="user_input_form" action="." method="POST" enctype="multipart/form-data">
-          
+
           <div class="form-group">
             <label for="building_name"> Spot name </label>
             <input type="text" class="form-control" id="building_name" name="building_name" placeholder="Empress"/>
@@ -47,6 +48,60 @@
           <div class="form-group">
             <label for="address"> Address # and Street </label>
             <input type="text" class="form-control" id="address" name="address" placeholder="3119 Shelbourne St" required="true"/>
+            <script>
+            var updateAddress = {
+                autocomplete: new google.maps.places.Autocomplete($("#address")[0], {
+                    types: ['geocode'],
+                    componentRestrictions: {country: 'ca'}
+                }),
+                event: function(){
+                    var self = this;
+                    google.maps.event.addListener(self.autocomplete, 'place_changed', function() {
+                        var place = self.autocomplete.getPlace(),
+                            address = place.address_components,
+                            streetAddress = '',
+                            city = '',
+                            state = '',
+                            zip = '',
+                            country = '';
+
+                        for (var i = 0; i < address.length; i++) {
+                            var addressType = address[i].types[0];
+
+                            if (addressType == 'subpremise') {
+                                streetAddress += address[i].long_name + '/';
+                            }
+                            if (addressType == 'street_number') {
+                                streetAddress += address[i].long_name + ' ';
+                            }
+                            if (address[i].types[0] == 'route') {
+                                streetAddress += address[i].long_name;
+                            }
+                            if (addressType == 'locality') {
+                                suburb = address[i].long_name;
+                            }
+                            if (addressType == 'administrative_area_level_1') {
+                                state = address[i].long_name;
+                            }
+                            if (addressType == 'postal_code') {
+                                zip = address[i].long_name;
+                            }
+                            if (addressType == 'country') {
+                                country = address[i].long_name;
+                            }
+                        }
+
+                        // update the textboxes
+                        setTimeout(function(){$('#address').val(streetAddress);},50);
+                        $('#city').val(suburb);
+                        $('#state').val(state);
+                    });
+
+                }
+            };
+
+            updateAddress.event();
+            </script>
           </div>
           <br>
           <!--
@@ -87,7 +142,7 @@
 
       <!-- Listings -->
       <div class="closest_coordinates"></div>
-      
+
     </div>
   </div>
   <div id="mapbar">
@@ -101,7 +156,7 @@
     <div>
     <button type="button" class="btn btn-default"> Write a Review </button>
     <button type="button" class="btn btn-default"> Contact this Host</button>
-    <div class="star-rating" style="padding-top: 20px"> 
+    <div class="star-rating" style="padding-top: 20px">
       <span class="fa fa-star-o" data-rating="1"></span>
       <span class="fa fa-star-o" data-rating="2"></span>
       <span class="fa fa-star-o" data-rating="3"></span>
