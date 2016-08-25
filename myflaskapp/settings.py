@@ -30,11 +30,11 @@ class Config(object):
     MAIL_USE_SSL = False
 
     # gmail authentication
-    MAIL_USERNAME = 'rob@adfreetime.com'
-    MAIL_PASSWORD = 'adspriikhwexbvnn'
+    MAIL_USERNAME = ''
+    MAIL_PASSWORD = ''
 
     # mail accounts
-    MAIL_DEFAULT_SENDER = 'rob@adfreetime.com'
+    MAIL_DEFAULT_SENDER = ''
     #celeru
     CELERY_BROKER_URL = 'amqp://guest:@127.0.0.1:5672//'
     CELERY_RESULT_BACKEND = 'amqp://guest:@127.0.0.1:5672//'
@@ -60,7 +60,7 @@ class DevConfig(Config):
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
-    WTF_CSRF_ENABLED = True
+    WTF_CSRF_ENABLED = False
 
 class TestConfig(Config):
     """Test configuration."""

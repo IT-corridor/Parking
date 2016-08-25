@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import os
+import os, jwt, flask_restful, pygeoip
 from datetime import datetime, timedelta
 from flask import Blueprint, flash, redirect, url_for, g, jsonify, request, make_response
 from flask_cors import CORS, cross_origin
 from flask_login import current_user
 from flask_restful import Resource, Api
-import flask_restful
-import jwt
 from jwt import DecodeError, ExpiredSignature
 from itsdangerous import URLSafeTimedSerializer
 from myflaskapp.user.models import User, AddressEntry, AddressEntrySchema
@@ -14,7 +12,6 @@ from myflaskapp.database import db
 from myflaskapp.extensions import login_manager, bcrypt
 from myflaskapp.settings import Config as config
 from functools import wraps
-import pygeoip
 
 blueprint = Blueprint('api', __name__)
 cors = CORS(blueprint, resources={r"/api/*": {"origins": "127.0.0.1:5000/"}})

@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
-import os
+import os, requests, jwt
 from datetime import datetime, timedelta
 from flask import Blueprint, flash, redirect, url_for, g, jsonify, request, make_response
 from flask_login import current_user
 from flask_restful import Resource, Api
 from flask_mail import Message
-import flask_restful, requests
-import jwt
 from jwt import DecodeError, ExpiredSignature
 from itsdangerous import URLSafeTimedSerializer
-# from myflaskapp.public import views
 from myflaskapp.user.models import User
 from myflaskapp.extensions import Mail, login_manager, bcrypt
 from myflaskapp.settings import Config as config
@@ -43,7 +40,7 @@ def send_email(to, subject, template):
         subject,
         recipients=[to],
         html=template,
-        sender='rob@adfreetime.com'
+        sender=''
     )
     mail.send(msg)
 
@@ -83,13 +80,11 @@ def create_token(user):
         #expiry
         'exp': datetime.utcnow() + timedelta(days=1)
     }
- 
+
     token = jwt.encode(payload, config.API_SALT, algorithm='HS256')
     return token.decode('unicode_escape')
 
- 
+
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, config.API_SALT, algorithms=['HS256'])
-
-

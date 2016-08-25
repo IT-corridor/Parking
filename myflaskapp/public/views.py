@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
+import datetime
 from flask import Blueprint, flash, redirect, render_template, request, url_for, jsonify, session, g, abort
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_cors import CORS, cross_origin
@@ -13,7 +14,7 @@ from myflaskapp.utils import flash_errors
 from itsdangerous import URLSafeTimedSerializer
 from myflaskapp.user.token import generate_confirmation_token, confirm_token, \
      send_email, send_mailgun_email, create_token, parse_token
-import datetime
+
 
 
 blueprint = Blueprint('public', __name__, static_folder='../static')

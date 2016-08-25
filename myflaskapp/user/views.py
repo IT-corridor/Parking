@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """User views."""
-import os, mapbox, json
-import math
-import stripe
+import os, mapbox, json, math, stripe
 from flask import Blueprint, Flask, render_template, \
     request, url_for, send_from_directory, redirect, session, g, flash, jsonify,\
     abort
@@ -161,7 +159,7 @@ def sell_parking():
         if address_entry_form.validate_on_submit():
             # Join the address fields into a single field.
             # 'address city state postal_code'
-            lookup = ' '.join([address_entry_form.data['address'], 
+            lookup = ' '.join([address_entry_form.data['address'],
                 address_entry_form.data['city'],
                 address_entry_form.data['state']])
 
@@ -169,7 +167,7 @@ def sell_parking():
             features = json.loads(geocoder.forward(lookup).content.decode('utf-8'))['features']
             features = [ feature for feature in features if ('address' in feature) ]
             # Storage Convenience
-            session['_price'] = address_entry_form.data.get('price', None) 
+            session['_price'] = address_entry_form.data.get('price', None)
             if address_entry_form.data.get('form_state', None) == 'validation':
                 # Store the features in the session based off feature['id'].
                 session['_geocoded_values'] = json.dumps({feature['id']:feature for feature in features })
@@ -192,7 +190,7 @@ def sell_parking():
                 address_entry.price = session['_price']
                 del session['_price']
 
-                selected_feature = json.loads(session['_geocoded_values'])[address_entry_commit_form.data['picked']]            
+                selected_feature = json.loads(session['_geocoded_values'])[address_entry_commit_form.data['picked']]
                 del session['_geocoded_values'] # Clean up the session
                 address_entry.longitude = selected_feature['center'][0]
                 address_entry.latitude = selected_feature['center'][1]
@@ -264,16 +262,16 @@ def _update_users_address():
     if address_entry_form.validate_on_submit():
         # Join the address fields into a single field.
         # 'address city state postal_code'
-        lookup = ','.join([address_entry_form.data['address'], 
+        lookup = ','.join([address_entry_form.data['address'],
             address_entry_form.data['city'],
-            address_entry_form.data['state'], 
+            address_entry_form.data['state'],
             address_entry_form.data['postal_code']])
 
         geocoder = mapbox.Geocoder()
         features = json.loads(geocoder.forward(lookup).content.decode('utf-8'))['features']
         features = [ feature for feature in features if ('address' in feature) ]
         # Storage Convenience
-        session['_phone'] = address_entry_form.data.get('phone', None) 
+        session['_phone'] = address_entry_form.data.get('phone', None)
         session['_building_name'] = address_entry_form.data.get('building_name', None)
         if address_entry_form.data.get('form_state', None) == 'validation':
             # Store the features in the session based off feature['id'].
@@ -304,9 +302,9 @@ def _update_users_address():
             del session['_phone'] # Cleanup the session
             # https://www.mapbox.com/help/define-lat-lon/
             # Sometimes mapbox returns long/lat or lat/long. With the Geocoding API, it seems
-            #  long/lat is the format. 
-            # With that, make sure you double check the projections. Google will return a long in the 
-            #  positive specturm while mapbox will return a long in the negative spectrum. Not a problem technically, 
+            #  long/lat is the format.
+            # With that, make sure you double check the projections. Google will return a long in the
+            #  positive specturm while mapbox will return a long in the negative spectrum. Not a problem technically,
             #  but this very question breeds hours of googling to understand the contextual differences between map
             #  providers.
             #  https://en.wikipedia.org/wiki/Map_projection
@@ -314,7 +312,7 @@ def _update_users_address():
             #  There is even some drama with the Google projections. epsg3857 and 900913 should be the same thing;
             #   but are very different when it comes to the specification. It's fun to read about. :)
             #  http://gis.stackexchange.com/questions/50347/which-is-correct-projection-in-arcgis-server-for-epsg3857-900913
-            selected_feature = json.loads(session['_geocoded_values'])[address_entry_commit_form.data['picked']]            
+            selected_feature = json.loads(session['_geocoded_values'])[address_entry_commit_form.data['picked']]
             del session['_geocoded_values'] # Clean up the session
             address_entry.longitude = selected_feature['center'][0]
             address_entry.latitude = selected_feature['center'][1]
@@ -418,13 +416,13 @@ def submit_address():
 def get_straight_distance(lat1, lon1, lat2, lon2):
     '''
     calculate the distance between two gps positions (latitude, longitude)
-    '''    
+    '''
     R = 6371  # Radius of the earth in km
     dLat = math.radians(lat2-lat1)  # deg2rad below
-    dLon = math.radians(lon2-lon1) 
+    dLon = math.radians(lon2-lon1)
     a = math.sin(dLat/2) * math.sin(dLat/2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dLon/2) * math.sin(dLon/2)
-     
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a)) 
+
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
     return R * c * 1000 # Distance in m
 
 #billing
@@ -483,6 +481,3 @@ def charge():
         be charged. Please check the number and/or contact your credit card
         company.</p></body></html>"""
     return render_template('users/charge.html', amount=amount)
-
-
-
