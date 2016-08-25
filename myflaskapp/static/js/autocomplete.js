@@ -40,7 +40,7 @@ var updateAddress = {
                 }
             }
 
-            // update the textboxes
+            // update the form
             setTimeout(function(){$('#address').val(streetAddress);},50);
             $('#city').val(suburb);
             $('#state').val(state);
