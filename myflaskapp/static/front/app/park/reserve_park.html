@@ -1,0 +1,31 @@
+<center>
+<div class="row" style="margin-top: 50px">
+  <div class="col-md-12">
+  	<img src="/styles/img/logo.png"/>
+  </div>
+</div>  
+</center>
+<div class="row">
+<div class="col-md-offset-1 col-md-10">
+  <h2>Reserve this spot <small> ({{ rsv_park.p2 }})</small></h2>
+  <hr>
+	<div class="panel panel-default">
+	  <div class="panel-heading">Make a Reservation: <b>{{ rsv_park.p9 | currency }}</b></div>
+	  <div class="panel-body">
+	  	<div class="row">
+	  	<div class="col-md-12">
+	  		<label>Message:</label>
+	  	</div>
+	  	<div class="col-md-12">
+	  		<input type="text" placeholder="  Hello! I am hoping to stay in your parking spot for a few days" style="width: 100%;">
+	  	</div>
+	  	<div class="col-md-2">
+	  		<a ng-click="pre_charge()" class="btn btn-info" style="margin-top: 20px;">Reserve Now</a>
+	  	</div>
+	  	<div class="row">
+	  </div>
+	</div>  
+</div>	
+</div>
+
+

@@ -21,7 +21,7 @@ blueprint = Blueprint('public', __name__, static_folder='../static')
 ts = URLSafeTimedSerializer('Secretfuckingkeyseverywhere')
 
 #for eventual use when seperating Backend api on different portfrom Frontend
-cors = CORS(blueprint, resources={r"/api/*": {"origins": "127.0.0.1:5000/"}}, supports_credentials=True)
+cors = CORS(blueprint, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -199,7 +199,6 @@ def registerapi():
     db.session.close()
     return jsonify({'result': status})
 
-
 #API Login
 
 #@CsrfProtect.exempt('viewname')
@@ -207,20 +206,16 @@ def registerapi():
 @blueprint.route('/api/login', methods=['POST'])
 def loginapi():
     json_data = request.json
-    user = User.query.filter_by(username=json_data['username']).first()
+    user = User.query.filter_by(email=json_data['email']).first()
     if user and bcrypt.check_password_hash(
             user.password, json_data['password']):
         session['logged_in'] = True
         status = True
+        return jsonify(token=create_token(user)), 200
     else:
         status = False
-    g.user = user
-    if status == True:
-        return jsonify(dict({'result': status,
-                             'token': create_token(user)
-                            }))
-    else:
-        return jsonify({'result': status})
+        
+    return jsonify({'result': status})
 
 
 #API Logout
@@ -229,3 +224,4 @@ def loginapi():
 def logoutapi():
     session.pop('logged_in', None)
     return jsonify({'result': 'success'})
+

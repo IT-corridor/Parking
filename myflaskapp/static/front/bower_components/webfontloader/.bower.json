@@ -1,0 +1,37 @@
+{
+  "name": "webfontloader",
+  "main": "webfontloader.js",
+  "description": "Web Font Loader gives you added control when using linked fonts via @font-face.",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "Apache-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "spec",
+    "tools",
+    "lib",
+    "bin"
+  ],
+  "keywords": [
+    "web",
+    "fonts",
+    "webfonts",
+    "font",
+    "loader",
+    "@font-face"
+  ],
+  "homepage": "https://github.com/typekit/webfontloader",
+  "version": "1.6.26",
+  "_release": "1.6.26",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.6.26",
+    "commit": "b330e5e088a3e60790b244cb106be22fbcaf0623"
+  },
+  "_source": "https://github.com/typekit/webfontloader.git",
+  "_target": "^1.6.24",
+  "_originalSource": "webfontloader"
+}

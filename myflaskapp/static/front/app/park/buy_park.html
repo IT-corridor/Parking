@@ -1,0 +1,53 @@
+<section class="chapter" ng-controller="BuyParkCtrl">
+    <div class='sidebar'>
+        <div class="heading" style="margin-top: 20px">
+            <h4>Where to?</h4>
+        </div>
+        <div ng-show="edit_destination" style="padding:20px;">
+            <form name="destination_form" class="form-validation ng-invalid ng-invalid-required" ng-submit="modify_destination()">
+            <md-input-container class="md-block">
+                <label>Spot Name</label>
+                <input ng-model="destination.spot_name">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label class="md-required">Address</label>
+                <input required="" id="spot_address" placeholder="" ng-model="address_" ng-change="error=false">
+            </md-input-container>
+            <div ng-show="error" class="alert alert-danger">{{error}}</div>
+            <div style="padding: 25px;">
+                <md-button type="submit" data-ng-disabled="!destination_form.$valid" class="md-raised btn-w-sm md-primary md-hue-4"> Submit</md-button>
+                <md-button style="margin-left:30px;" class="md-raised btn-sm" ng-click="set_destination()"> Cancel Update</md-button>
+            </div>
+            </form>
+        </div>
+        <md-button style="margin:20px;" class="md-raised btn-w-md md-primary md-hue-4" ng-click="set_destination()" ng-hide="edit_destination">
+            Set or Renew Destination</md-button>
+        <div class="divider divider-xs"></div>
+        <div class="item dst-address" data-name="21" data-geojson-key="">
+            <a href="#" class="title">
+                <span> {{ data.origin.properties.p1 }} </span>
+                <br>
+                <strong>{{ data.origin.properties.p5 }}</strong>
+                <br>
+                <small class="quite"></small>
+            </a>
+            <div> {{ data.origin.properties.p6 }} </div>
+        </div>
+        <hr>
+        <md-button style="margin-left:20px;" class="md-raised btn-w-sm" ng-click="show_more()">Show more spots</md-button>
+        <div class="divider divider-xs"></div>
+        <div class="item " ng-repeat="item in featureCollection.features.slice(1)">
+            <a ng-mouseover="show_path(item.properties.p0)" ng-click="park_detail(item.properties)" class="title">
+                <span>  </span>
+                <br>
+                <strong>{{ item.properties.p5 }}</strong>
+                <br>
+                <small class="quite"></small>
+            </a>
+            <md-button ng-click="reserve_park(item.properties)" class="md-raised btn-w-xs btn-buy md-accent">{{ item.properties.p9 | currency }}</md-button>
+            <div> {{ item.properties.p6 }}</div>
+        </div>
+    </div>
+    <div id='map'></div>
+</section>

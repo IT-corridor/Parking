@@ -1,0 +1,19 @@
+<center>
+  <form action="/users/charge" method="post">
+    <input type="hidden" name="amount" value="{{ price*100 }}">
+    <article>
+      <label>
+        <span>Amount is {{ rsv_park.p9 | currency }}</span>
+      </label>
+    </article>
+
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ app.stripe_key }}"
+            data-description="A Parkable Charge"
+            data-amount="{{ rsv_park.p9 * 100 }}"
+            data-locale="auto"
+            data-image="/styles/img/logo2.png"
+            data-zip-code="true">            
+            </script>
+  </form>
+</center>

@@ -4,15 +4,20 @@ import os, mapbox, json, math, stripe
 from flask import Blueprint, Flask, render_template, \
     request, url_for, send_from_directory, redirect, session, g, flash, jsonify,\
     abort
+from flask_restful import Api    
 from flask_login import login_required, current_user, fresh_login_required
-from myflaskapp.user.models import User, AddressEntry, AddressDistance
+from myflaskapp.user.models import User, AddressEntry, AddressDistance, AddressEntrySchema
 from myflaskapp.extensions import celery
+from flask_cors import CORS, cross_origin
 from myflaskapp.user.forms import EditForm, Update, AddressEntryForm, AddressEntryCommitForm
 from myflaskapp.user.token import check_confirmed
+from myflaskapp.user.token import TokenResource
 from myflaskapp.database import db
 from sqlalchemy.sql import not_
 
 blueprint = Blueprint('user', __name__, url_prefix='/users', static_folder='../static')
+cors = CORS(blueprint, resources={r"/users/*": {"origins": "*"}}, supports_credentials=True)
+api = Api(blueprint)
 
 @blueprint.before_request
 def before_request():
@@ -404,7 +409,7 @@ def submit_address():
         address_entry = query_set.first()
         return jsonify({
             'waypoints': AddressDistance.get_direction_pois(address_entry.id),
-            'origin': address_entry.as_geojson(),
+            'origin': address_entry.as_geojson(True),
         })
 
     if request.method == 'POST':
@@ -481,3 +486,234 @@ def charge():
         be charged. Please check the number and/or contact your credit card
         company.</p></body></html>"""
     return render_template('users/charge.html', amount=amount)
+
+
+# Any API class now inheriting the TokenResource class will need Authentication
+class BuyParking(TokenResource):
+    def get(self):
+        # If no address is saved for the current user, return an empty object.
+        query_set = AddressEntry.query.filter(AddressEntry.user_id==g.user_id)
+        if query_set.count() < 1:
+            return jsonify({'waypoints': [], 'origin': {}, 'empty': True})
+
+        # destination address
+        address_entry = query_set.first()
+        return jsonify({
+            'waypoints': AddressDistance.get_direction_pois(address_entry.id),
+            'origin': address_entry.as_geojson(True),
+        })
+
+    def post(self):
+        lookup = json.loads(request.data)['address']
+        geocoder = mapbox.Geocoder()
+        features = json.loads(geocoder.forward(lookup).content.decode('utf-8'))['features']
+
+        selected_feature = None
+        for feature in features:
+            if 'address' in feature:
+                selected_feature = feature
+                break
+        if not selected_feature:
+            return 'The is no such place on mapbox!', 400
+
+        # print lookup
+        # print selected_feature['place_name'], '@@@@@@@@'    
+        # print selected_feature['relevance']
+
+        query_set = AddressEntry.query.filter(AddressEntry.user_id==g.user_id, AddressEntry.is_dest==True, AddressEntry.is_avail==True)
+        if query_set.count() == 0:
+            address_entry = AddressEntry()
+            address_entry.user_id = g.user_id
+            address_entry.is_dest = True
+            address_entry.is_avail = True
+        else:
+            address_entry = query_set.first()
+
+
+        address_entry.name = json.loads(request.data)['spot_name']
+        address_entry.longitude = selected_feature['center'][0]
+        address_entry.latitude = selected_feature['center'][1]
+        address_entry.street_number = selected_feature['address']
+        address_entry.street_name = selected_feature['text']
+        address_entry.mapbox_place_name = selected_feature['place_name']
+
+        # Generate a dict from
+        for feature in selected_feature['context']:
+            if feature['id'].startswith('place'):
+                address_entry.county = feature['text']
+
+            if feature['id'].startswith('postcode'):
+                address_entry.postal_code = feature['text']
+
+            if feature['id'].startswith('region'):
+                address_entry.state = feature['text']
+
+            if feature['id'].startswith('country'):
+                address_entry.country = feature['text']
+
+            if feature['id'].startswith('neighborhood'):
+                address_entry.neighborhood = feature['text']
+
+        db_session = db.session()
+        db_session.add(address_entry)
+        db_session.commit()
+
+        origin = {
+            'type': 'Feature',
+            'properties': {'name': address_entry.name},
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [float(address_entry.longitude), float(address_entry.latitude)]
+            }
+        }
+
+        # just for the parking spots within the threshold (20Km), create/update the distance from the destination
+        for sub_address in AddressEntry.query.filter(AddressEntry.is_dest==False, AddressEntry.is_avail==True):
+            distance = get_straight_distance(float(address_entry.latitude), float(address_entry.longitude), float(sub_address.latitude), float(sub_address.longitude))
+            if distance > 20000:
+                continue
+
+            query_set = AddressDistance.query.filter(AddressDistance.address_a_id==address_entry.id, AddressDistance.address_b_id==sub_address.id)
+            if query_set.count() == 0:
+                address_distance = AddressDistance()
+            else:
+                address_distance = query_set.first()
+
+            destination = {
+                'type': 'Feature',
+                'properties': {'name': sub_address.name},
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [float(sub_address.longitude), float(sub_address.latitude)],
+                }
+            }
+
+            content = mapbox.Directions().directions([origin, destination],'mapbox.driving').geojson()
+            address_distance.address_a_id = address_entry.id
+            address_distance.address_b_id = sub_address.id
+            address_distance.mapbox_response = json.dumps(content)
+            address_distance.speed_scala = sum([feature['properties']['distance'] for feature in content['features']])
+            db_session = db.session()
+            db_session.add(address_distance)
+            db_session.commit()
+
+        return  {
+                    'waypoints': AddressDistance.get_direction_pois(address_entry.id),
+                    'origin': address_entry.as_geojson(True),
+                }
+
+api.add_resource(BuyParking, '/buy_parking')
+
+
+class SellParking(TokenResource):
+    def get(self, action):
+        if action == 'my_spots':
+            spots = AddressEntry.query.filter(AddressEntry.user_id==g.user_id, AddressEntry.is_dest==False)
+            schema = AddressEntrySchema()
+            spots = schema.dump(spots, many=True).data
+            return jsonify(spots)
+        elif action == 'is_valid_address':
+            return { 'result': True }
+
+    def post(self, action):
+        spot = json.loads(request.data)
+        address_entry = AddressEntry()
+
+        address_entry.user_id = g.user_id
+        address_entry.is_dest = False
+        address_entry.is_avail = True
+        address_entry.price = spot['price']
+
+        address_entry.photo_url = spot['photo_url']
+        address_entry.spot_type = spot['spot_type']
+        address_entry.avail_type = spot['availability_type']
+
+        # update the user's phone number
+        # spot['phone']
+        
+        geocoder = mapbox.Geocoder()
+        features = json.loads(geocoder.forward(spot['address']).content.decode('utf-8'))['features']
+
+        selected_feature = None
+        for feature in features:
+            if 'address' in feature:
+                selected_feature = feature
+                break
+        if not selected_feature:
+            return 'The is no such place on mapbox!', 400
+
+        address_entry.longitude = selected_feature['center'][0]
+        address_entry.latitude = selected_feature['center'][1]
+        address_entry.street_number = selected_feature['address']
+        address_entry.street_name = selected_feature['text']
+        address_entry.mapbox_place_name = selected_feature['place_name']
+
+        # address_entry.name = data.get('name')
+        # Generate a dict from
+        for feature in selected_feature['context']:
+            if feature['id'].startswith('place'):
+                address_entry.county = feature['text']
+
+            if feature['id'].startswith('postcode'):
+                address_entry.postal_code = feature['text']
+
+            if feature['id'].startswith('region'):
+                address_entry.state = feature['text']
+
+            if feature['id'].startswith('country'):
+                address_entry.country = feature['text']
+
+            if feature['id'].startswith('neighborhood'):
+                address_entry.neighborhood = feature['text']
+
+        db_session = db.session()
+        db_session.add(address_entry)
+        db_session.commit()
+
+        origin = {
+            'type': 'Feature',
+            'properties': {'name': address_entry.street_name},
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [float(address_entry.longitude), float(address_entry.latitude)]
+            }
+        }
+
+        # just for the destinations within the threshold (20Km), create the distance from the new spot
+        for sub_address in AddressEntry.query.filter(AddressEntry.is_dest==True, AddressEntry.is_avail==True):
+            distance = get_straight_distance(float(address_entry.latitude), float(address_entry.longitude), float(sub_address.latitude), float(sub_address.longitude))
+            if distance > 20000:
+                continue
+
+            address_distance = AddressDistance()
+
+            destination = {
+                'type': 'Feature',
+                'properties': {'name': sub_address.street_name},
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [float(sub_address.longitude), float(sub_address.latitude)],
+                }
+            }
+
+            content = mapbox.Directions().directions([origin, destination],'mapbox.driving').geojson()
+            address_distance.address_a_id = sub_address.id      # destination
+            address_distance.address_b_id = address_entry.id    # parking spot
+            address_distance.mapbox_response = json.dumps(content)
+            address_distance.speed_scala = sum([feature['properties']['distance'] for feature in content['features']])
+            db_session = db.session()
+            db_session.add(address_distance)
+            db_session.commit()
+        return 'success'
+
+    # should be delete but it does not allow extra data        
+    def patch(self, action):
+        spot_id = json.loads(request.data)['spot_id']
+        spot = AddressEntry.query.get(spot_id)
+        # delete relavant entries in distance table.
+        AddressDistance.query.filter(AddressDistance.address_b_id==spot.id).delete()
+        spot.delete()
+        return 'success'
+
+api.add_resource(SellParking, '/sell_parking/<string:action>')
+

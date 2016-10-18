@@ -46,6 +46,7 @@ class User(UserMixin, SurrogatePK, Model):
     dest_id = Column(db.String(50), nullable=True)
     place_id = Column(db.String(50), nullable=True)
     spot_avail = Column(db.Boolean(), default=False)
+    phone = Column(db.Unicode(50), unique=False, nullable=True)
 
     def __init__(self, username, email, password=None, admin=False, confirmed_on=None, **kwargs):
         """Create instance."""
@@ -123,10 +124,14 @@ class AddressEntry(SurrogatePK, Model):
     is_dest = Column(db.Boolean(), default=True)
     is_avail = Column(db.Boolean(), default=True)
 
+    photo_url = Column(db.Unicode(300), unique=False, nullable=True)
+    spot_type = Column(db.Unicode(50), unique=False, nullable=True)
+    avail_type = Column(db.Unicode(50), unique=False, nullable=True)
+
     def format_phone(self, phone_raw):
         return phone_raw
 
-    def as_geojson(self):
+    def as_geojson(self, is_dest=False):
         return {
             'type': 'Feature',
             'geometry': {
@@ -138,11 +143,13 @@ class AddressEntry(SurrogatePK, Model):
             'properties': {
                 'p0': self.id,
                 'p1': self.name,
+                'p2': self.mapbox_place_name,
                 'p4': self.phone,
                 'p5': ' '.join([self.street_number or '', self.street_name or '']),
                 'p6': self.state,
                 'p8': self.cross_street,
                 'p9': self.price,
+                'marker-color': '#ff8888' if is_dest else '#8888ff'
             }
         }
 
@@ -154,4 +161,4 @@ class AddressEntrySchema(Schema):
     is_avail = fields.Boolean(dump_only=True)
 
     class Meta:
-        fields = ('latitude', 'longitude')
+        fields = ('id', 'latitude', 'longitude', 'mapbox_place_name', 'price')

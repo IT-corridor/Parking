@@ -88,3 +88,34 @@ def create_token(user):
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, config.API_SALT, algorithms=['HS256'])
+
+# Token Login decorator function
+
+def token_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not request.headers.get('Authorization'):
+            response = jsonify(message='Missing authorization header')
+            response.status_code = 401
+            return response
+
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
+
+        g.user_id = payload['sub']
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+# Adding the login token decorator to the Resource class
+class TokenResource(Resource):
+    method_decorators = [token_required]

@@ -1,0 +1,58 @@
+<section class="container-fluid with-maxwidth chapter" ng-controller="ParkTableController">
+
+    <article class="article">
+        <md-card class="no-margin-h">
+            
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Parking Spots</span>
+                    <div flex></div>
+                    <md-button class="md-icon-button" ng-click="loadStuff()">
+                        <md-icon>refresh</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            
+            <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+                </div>
+            </md-toolbar>
+            
+            <md-table-container>
+                <table md-table md-row-select="options.rowSelection" multiple="{{options.multiSelect}}" ng-model="selected" md-progress="promise">
+                    <thead ng-if="!options.decapitate" md-head md-order="query.order" md-on-reorder="logOrder">
+                        <tr md-row>
+                            <th md-column md-order-by="mapbox_place_name"><span>ADDRESS # AND STREET</span></th>
+                            <th md-column md-order-by="type"><span>Type</span></th>
+                            <th md-column md-numeric md-order-by="price" md-desc><span>Price</span></th>
+                            <th md-column><span>Availability</span></th>
+                            <th md-column><span>Action</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="spot" md-on-select="logItem" md-auto-select="options.autoSelect" ng-repeat="spot in data | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                            <td md-cell>{{spot.mapbox_place_name}}</td>
+                            <td md-cell>
+                                <md-select ng-model="spot.type" placeholder="Residential">
+                                    <md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>
+                                </md-select>
+                            </td>
+                            <td md-cell>{{spot.price | currency}}</td>
+                            <td md-cell><md-checkbox></md-checkbox></td>                            
+                            <td>
+                                <md-button class="md-fab md-mini" aria-label="Eat cake" ng-click="delete_spot(spot.id)">
+                                    <md-icon class="material-icons">delete_sweep</md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+
+            <md-table-pagination md-limit="query.limit" md-limit-options="limitOptions" md-page="query.page" md-total="{{desserts.count}}" md-page-select="options.pageSelect" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+        </md-card>
+
+
+    </article>
+</section>

@@ -1,0 +1,136 @@
+<section class="container-fluid with-maxwidth chapter">
+
+    <article class="article">
+        <h2 class="article-title">Sell Parking Wizard</h2>
+        <div class="box box-default" ng-controller="SellParkCtrl">
+            <div class="box-body">
+                        
+                <section class="ui-angular-wizard" >
+
+                    <wizard on-finish="finished()">
+                        <wz-step wz-title="New spot" canexit="check_address()">
+                            <h2>New spot</h2>
+                            <div class="ui-wizard-content" ng-init="google_autocomplete()">
+                                <md-input-container class="md-block">
+                                    <label class="md-required">Address</label>
+                                    <input required="" id="spot_address" placeholder="" ng-model="address" ng-change="address_change()">
+                                </md-input-container>            
+                                <div ng-show="error" class="alert alert-danger">{{error}}</div>
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button type="submit" wz-next class="md-raised btn-w-md md-primary" ng-click="set_next_clicked()">Next</md-button>
+                            </div>
+                        </wz-step>
+                        <wz-step wz-title="Phone verification" canexit="can_phone_exit">
+                            <h2>Phone verification</h2>
+                            <div class="ui-wizard-content">
+                                <md-content layout-gt-sm="row" layout-padding>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label class="md-required">Phone number</label>
+                                        <input required="" ng-pattern="/^[0-9]{11,13}$/" ng-model="data.phone">
+                                    </md-input-container>                          
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                    <md-button class="md-raised btn-w-sm md-primary md-hue-4" ng-click="toggle_phone_verifiable()"> Send SMS</md-button>      
+                                    </md-input-container>
+                                </md-content>
+                                <md-content layout-gt-sm="row" layout-padding>
+                                <md-input-container class="md-block">
+                                    <label class="md-required">Verfication code</label>
+                                    <input required="" ng-model="phone_code" ng-change="check_code(phone_code)" ng-disabled='!phone_verifiable'>
+                                </md-input-container>                         
+                                </md-content>       
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button wz-previous="logStep()"  class="md-raised btn-w-md">BACK</md-button>
+                                <md-button wz-next="logStep()" class="md-raised btn-w-md md-primary">NEXT</md-button>                     
+                            </div>
+                        </wz-step>
+                        <wz-step wz-title="Spot type">
+                            <h2>Type of spot</h2>
+                            <div class="ui-wizard-content">
+                                <md-input-container class="md-block">
+                                    <label>Type</label>
+                                    <md-select ng-model="data.spot_type" aria-label="select">
+                                        <md-option ng-repeat="type in spot_types" value="{{type}}"> {{type}} </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button wz-previous="logStep()"  class="md-raised btn-w-md">BACK</md-button>
+                                <md-button wz-next="logStep()" class="md-raised btn-w-md md-primary">NEXT</md-button>
+                            </div>
+                        </wz-step>
+                        <wz-step wz-title="Photo">
+                            <h2>Photo</h2>
+                            <div class="ui-wizard-content">
+                                <md-input-container class="md-block">
+                                    <label class="md-required">URL</label>
+                                    <input required="" placeholder="" ng-model="data.photo_url">
+                                </md-input-container>                                
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button wz-previous="logStep()"  class="md-raised btn-w-md">BACK</md-button>
+                                <md-button wz-next="logStep()" class="md-raised btn-w-md md-primary">NEXT</md-button>
+                            </div>
+                        </wz-step>                    
+                        <wz-step wz-title="Available Time">
+                            <h2>Available Time</h2>
+                            <div class="ui-wizard-content">
+                                <md-input-container class="md-block">
+                                    <label>Availability Type</label>
+                                    <md-select ng-model="data.availability_type" aria-label="select" ng-change="availability_type_change(data.availability_type)">
+                                        <md-option ng-repeat="type in availability_types" value="{{type}}"> {{type}} </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-content layout-gt-sm="row" layout-padding ng-repeat="slider in rangeSlider">
+                                    <strong style="display: inline-block; width: 130px;">{{ slider.title }}</strong>
+                                    <md-checkbox ng-model="slider.enabled" ng-change="set_time_enable(slider, slider.enabled)" aria-label="Checkbox 1" ng-disabled="data.availability_type=='Monthly'">
+                                    </md-checkbox>
+                                    <rzslider
+                                      data-rz-slider-model="slider.minValue"
+                                      data-rz-slider-high="slider.maxValue"
+                                      data-rz-slider-options="slider.options"
+                                    ></rzslider>                              
+                                </md-content>      
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button wz-previous="logStep()"  class="md-raised btn-w-md">BACK</md-button>
+                                <md-button wz-next="logStep()" class="md-raised btn-w-md md-primary">NEXT</md-button>
+                            </div>
+                        </wz-step>
+                        <wz-step wz-title="Price" canexit="exitWithAPromise">
+                            <h2>Price</h2>
+                            <div class="ui-wizard-content">
+                                <md-content layout-gt-sm="row" layout-padding>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label class="md-required">{{ data.availability_type }} Price</label>
+                                        <input required="" ng-model="data.price">
+                                    </md-input-container>                          
+                                </md-content>
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button wz-previous="logStep()"  class="md-raised btn-w-md">BACK</md-button>
+                                <md-button wz-next="logStep()" class="md-raised btn-w-md md-primary" ng-click="add_spot()">NEXT</md-button>
+                            </div>
+                        </wz-step>
+                        <wz-step wz-title="Finish him">
+                            <h2>Finish him</h2>
+                            <div class="ui-wizard-content">
+                                <section ng-include=" 'app/park/parking_table.html'"></section>
+                            </div>
+                            <div class="ui-wizard-actions">
+                                <md-button wz-reset class="md-raised btn-w-md md-accent">Reset</md-button>
+                                <md-button wz-previous="logStep()"  class="md-raised btn-w-md">BACK</md-button>
+                                <md-button wz-next="logStep()" class="md-raised btn-w-md md-primary">Finish</md-button>
+                            </div>
+                        </wz-step>
+                    </wizard>
+                </section>
+
+            </div>
+        </div>
+    </article>
+    
+
+</section>
